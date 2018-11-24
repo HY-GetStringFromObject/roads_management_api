@@ -22,4 +22,5 @@ public class VehicleDto {
 	}
 
 	@JsonPOJOBuilder()
+	public static class VehicleDtoBuilder { }
 }
