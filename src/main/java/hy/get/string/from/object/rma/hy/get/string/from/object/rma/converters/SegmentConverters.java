@@ -14,6 +14,7 @@ public class SegmentConverters {
 			.secondNodeDto(NodeConverters.convertToDto((p.getNodeBySecNode())))
 			.length(p.getLength())
 			.name(p.getName())
+			.segmentId(p.getSegId())
 			.build();
 	}
 }
