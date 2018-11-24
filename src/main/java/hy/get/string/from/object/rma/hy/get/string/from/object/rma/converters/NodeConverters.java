@@ -12,6 +12,7 @@ public class NodeConverters {
 		return NodeDto.builder()
 			.length(n.getLength())
 			.width(n.getWidth())
+			.idNode(n.getNodId())
 			.build();
 	}
 }
