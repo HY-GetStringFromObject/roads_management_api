@@ -8,22 +8,19 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@JsonDeserialize(builder = SecondNodeDto.SecondNodeDtoBuilder.class)
-public class SecondNodeDto {
-
+@JsonDeserialize(builder = NodeDto.NodeDtoBuilder.class)
+public class NodeDto {
 
 	private Double length;
 	private Double width;
 
 	@Builder
-	public SecondNodeDto(Double length, Double width) {
+	public NodeDto(Double length, Double width) {
 		this.length = length;
 		this.width = width;
 	}
 
 	@JsonPOJOBuilder(withPrefix = "")
-	public static class SecondNodeDtoBuilder {
+	public static class NodeDtoBuilder {
 	}
-
-
 }

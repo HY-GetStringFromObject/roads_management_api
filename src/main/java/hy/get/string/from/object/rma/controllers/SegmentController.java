@@ -1,6 +1,6 @@
 package hy.get.string.from.object.rma.controllers;
 
-import hy.get.string.from.object.rma.repositories.SegmentRepository;
+import hy.get.string.from.object.rma.services.SegmentService;
 import net.bedra.maciej.mblogging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,12 +10,14 @@ public class SegmentController {
 
 	private static Logger log = Logger.getLogger();
 
-	private SegmentRepository segmentRepository;
+	private SegmentService segmentService;
 
 	@Autowired
-	public SegmentController(SegmentRepository segmentRepository) {
-		this.segmentRepository = segmentRepository;
+	public SegmentController(SegmentService segmentService) {
+		this.segmentService = segmentService;
 	}
+
+
 
 	public void SegmentCreate(){
 		log.info("Start create segment");
