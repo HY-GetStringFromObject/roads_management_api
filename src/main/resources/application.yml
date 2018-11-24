@@ -1,6 +1,11 @@
 mysql:
-  host: 
+  host:
   port:
   database:
   username:
   password:
+
+google:
+  secretkey:
+  api:
+    url: https://maps.googleapis.com/maps/api/directions/json
