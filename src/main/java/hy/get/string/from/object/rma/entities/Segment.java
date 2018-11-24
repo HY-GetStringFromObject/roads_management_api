@@ -18,7 +18,8 @@ public class Segment {
 	private Node nodeBySecNode;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name="seg_id", unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "seg_id", unique = true, nullable = false)
 	public Integer getSegId() {
 		return segId;
 	}
