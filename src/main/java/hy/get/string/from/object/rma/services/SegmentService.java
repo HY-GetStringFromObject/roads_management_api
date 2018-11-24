@@ -1,23 +1,16 @@
 package hy.get.string.from.object.rma.services;
 
-<<<<<<< HEAD
-=======
 import hy.get.string.from.object.rma.dto.ApiError;
 import hy.get.string.from.object.rma.dto.ApiErrorDetail;
->>>>>>> 38b716ed77cadcacd73d04539454f269d82b0f45
 import hy.get.string.from.object.rma.dto.NodeDto;
 import hy.get.string.from.object.rma.dto.SegmentDto;
 import hy.get.string.from.object.rma.entities.Node;
 import hy.get.string.from.object.rma.entities.Segment;
-<<<<<<< HEAD
-import hy.get.string.from.object.rma.hy.get.string.from.object.rma.converters.SegmentConverters;
-import hy.get.string.from.object.rma.repositories.SegmentRepository;
-=======
 import hy.get.string.from.object.rma.exceptions.ApiException;
+import hy.get.string.from.object.rma.hy.get.string.from.object.rma.converters.SegmentConverters;
 import hy.get.string.from.object.rma.repositories.NodeRepository;
 import hy.get.string.from.object.rma.repositories.SegmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
->>>>>>> 38b716ed77cadcacd73d04539454f269d82b0f45
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
