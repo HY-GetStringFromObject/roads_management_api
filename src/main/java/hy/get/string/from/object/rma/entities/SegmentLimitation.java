@@ -5,7 +5,7 @@ import java.util.Objects;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "segment_limitation")
+@Table(name = "segment_limitation", schema = "m1148_hackyeah18", catalog = "")
 public class SegmentLimitation {
 
 	private Integer segLimId;

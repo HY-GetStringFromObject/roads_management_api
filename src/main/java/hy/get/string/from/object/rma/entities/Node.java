@@ -10,8 +10,8 @@ import javax.persistence.*;
 public class Node {
 
 	private Integer nodId;
-	private Double length;
-	private Double width;
+	private Double lat;
+	private Double lng;
 	private Timestamp modifyDate;
 	private Timestamp insertDate;
 
@@ -27,23 +27,23 @@ public class Node {
 	}
 
 	@Basic
-	@Column(name = "length")
-	public Double getLength() {
-		return length;
+	@Column(name = "lat")
+	public Double getLat() {
+		return lat;
 	}
 
-	public void setLength(Double length) {
-		this.length = length;
+	public void setLat(Double lat) {
+		this.lat = lat;
 	}
 
 	@Basic
-	@Column(name = "width")
-	public Double getWidth() {
-		return width;
+	@Column(name = "lng")
+	public Double getLng() {
+		return lng;
 	}
 
-	public void setWidth(Double width) {
-		this.width = width;
+	public void setLng(Double lng) {
+		this.lng = lng;
 	}
 
 	@Basic
@@ -70,18 +70,23 @@ public class Node {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
+
 		Node node = (Node) o;
 
-		return Objects.equals(nodId, node.nodId) &&
-			Objects.equals(length, node.length) &&
-			Objects.equals(width, node.width) &&
-			Objects.equals(modifyDate, node.modifyDate) &&
-			Objects.equals(insertDate, node.insertDate);
+		if (!nodId.equals(node.nodId)) return false;
+		if (!lat.equals(node.lat)) return false;
+		if (!lng.equals(node.lng)) return false;
+		if (modifyDate != null ? !modifyDate.equals(node.modifyDate) : node.modifyDate != null) return false;
+		return insertDate != null ? insertDate.equals(node.insertDate) : node.insertDate == null;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(nodId, length, width, modifyDate, insertDate);
+		int result = nodId.hashCode();
+		result = 31 * result + lat.hashCode();
+		result = 31 * result + lng.hashCode();
+		result = 31 * result + (modifyDate != null ? modifyDate.hashCode() : 0);
+		result = 31 * result + (insertDate != null ? insertDate.hashCode() : 0);
+		return result;
 	}
-
 }

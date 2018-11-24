@@ -84,7 +84,7 @@ public class SegmentService {
 	}
 	private Node findNode(NodeDto nodeDto, Double length, Double width){
 
-		Node node = nodeRepository.findByLengthAndWidth(length, width);
+		Node node = nodeRepository.findByLatAndLng(length, width);
 
 		if (node == null) {
 			log.info("Create  node - length: " + length + " width: " + width);
@@ -98,8 +98,8 @@ public class SegmentService {
 
 		long time = Calendar.getInstance().getTime().getTime();
 		Node node = new Node();
-		node.setLength(nodeDto.getLength());
-		node.setWidth(nodeDto.getWidth());
+		node.setLng(nodeDto.getLength());
+		node.setLat(nodeDto.getWidth());
 		node.setInsertDate(new Timestamp(time));
 		node.setModifyDate(new Timestamp(time));
 		return node;
@@ -128,6 +128,8 @@ public class SegmentService {
 
 		if (StringUtils.isEmpty(segmentDto.getName())) {
 			list.add(new ApiErrorDetail("Segment name is empty", new String[]{"name"}));
+		}else{
+//			segmentRepository.
 		}
 
 		if (StringUtils.isEmpty(segmentDto.getLength())) {
