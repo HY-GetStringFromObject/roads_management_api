@@ -7,6 +7,7 @@ import hy.get.string.from.object.rma.dto.SegmentDto;
 import hy.get.string.from.object.rma.entities.Node;
 import hy.get.string.from.object.rma.entities.Segment;
 import hy.get.string.from.object.rma.exceptions.ApiException;
+import hy.get.string.from.object.rma.hy.get.string.from.object.rma.converters.SegmentConverters;
 import hy.get.string.from.object.rma.repositories.NodeRepository;
 import hy.get.string.from.object.rma.repositories.SegmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +17,46 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @Service
 public class SegmentService {
 
 	private SegmentRepository segmentRepository;
+
 	private NodeRepository nodeRepository;
 
 	@Autowired
 	public SegmentService(SegmentRepository segmentRepository, NodeRepository nodeRepository) {
 		this.segmentRepository = segmentRepository;
 		this.nodeRepository = nodeRepository;
+	}
+
+	public SegmentDto getSingleSegment(Integer segmentId) {
+
+		Optional<Segment> segmentById = segmentRepository.findById(segmentId);
+		Segment segment = segmentById.orElse(null);
+
+		return SegmentConverters.convertToDto(segment);
+	}
+
+	public List<SegmentDto> getAllSegments() {
+		Iterable<Segment> all = segmentRepository.findAll();
+		Integer size = 0;
+		if(all instanceof Collection) {
+			size = ((Collection)all).size();
+		}
+		if(size == 0) {
+			return null;
+		}
+
+		return StreamSupport.stream(all.spliterator(), false)
+			.map(p -> SegmentConverters.convertToDto(p))
+			.collect(Collectors.toList());
 	}
 
 	public SegmentDto createSegment(SegmentDto segmentDto) {
@@ -118,7 +149,6 @@ public class SegmentService {
 		if (!list.isEmpty()) {
 			throw new ApiException(400, "Invalid create segment");
 		}
-
 
 	}
 }
