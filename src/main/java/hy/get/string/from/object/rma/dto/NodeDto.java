@@ -13,11 +13,13 @@ public class NodeDto {
 
 	private Double length;
 	private Double width;
+	private Integer idNode;
 
 	@Builder
-	public NodeDto(Double length, Double width) {
+	public NodeDto(Double length, Double width, Integer idNode) {
 		this.length = length;
 		this.width = width;
+		this.idNode = idNode;
 	}
 
 	@JsonPOJOBuilder(withPrefix = "")

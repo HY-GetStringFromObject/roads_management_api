@@ -67,7 +67,7 @@ public class SegmentController {
 		log.info("Start create segment");
 		SegmentDto newSegmentDto = segmentService.createSegment(segmentDto);
 		log.info("End create segment");
-		return ResponseEntity.status(200).body(segmentDto);
+		return ResponseEntity.status(200).body(newSegmentDto);
 
 	}
 
