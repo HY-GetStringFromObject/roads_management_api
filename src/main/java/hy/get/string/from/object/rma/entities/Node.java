@@ -1,11 +1,10 @@
 package hy.get.string.from.object.rma.entities;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import java.sql.Timestamp;
 import java.util.Objects;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Node {
@@ -17,7 +16,7 @@ public class Node {
 	private Timestamp insertDate;
 
 	@Id
-	@Column(name = "nod_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name="nod_id", unique=true, nullable=false)
 	public Integer getNodId() {
 		return nodId;
 	}

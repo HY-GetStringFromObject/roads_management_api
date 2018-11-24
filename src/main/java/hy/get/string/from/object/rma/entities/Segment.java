@@ -1,13 +1,10 @@
 package hy.get.string.from.object.rma.entities;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import java.sql.Timestamp;
 import java.util.Objects;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class Segment {
@@ -21,10 +18,11 @@ public class Segment {
 	private Node nodeBySecNode;
 
 	@Id
-	@Column(name = "seg_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name="seg_id", unique=true, nullable=false)
 	public Integer getSegId() {
 		return segId;
 	}
+
 
 	public void setSegId(Integer segId) {
 		this.segId = segId;

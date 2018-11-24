@@ -26,7 +26,7 @@ public class SegmentDto {
 		this.segmentId = segmentId;
 	}
 
-	@JsonPOJOBuilder
+	@JsonPOJOBuilder(withPrefix = "")
 	public static class SegmentDtoBuilder {
 	}
 }

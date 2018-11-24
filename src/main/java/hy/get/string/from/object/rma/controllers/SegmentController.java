@@ -63,8 +63,8 @@ public class SegmentController {
 	@RequestMapping(
 		path = "/segment",
 		method = RequestMethod.POST,
-		consumes = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE,
-		produces = MediaType.APPLICATION_PROBLEM_JSON_UTF8_VALUE
+		consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+		produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 	)
 	public ResponseEntity<SegmentDto> CreateSegment(@RequestBody SegmentDto segmentDto) {
 		log.info("Start create segment");
