@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface NodeRepository extends CrudRepository<Node, Integer> {
 
-	Node findByLengthAndWidth(Double length, Double width);
+	Node findByLatAndLng(Double lat, Double lng);
 }

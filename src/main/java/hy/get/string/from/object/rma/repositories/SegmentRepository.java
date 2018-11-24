@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface SegmentRepository extends CrudRepository<Segment, Integer> {
 
 	Segment findBySegId(Integer segId);
+	Segment findByName(String name);
 
 }

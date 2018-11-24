@@ -2,16 +2,10 @@ package hy.get.string.from.object.rma.entities;
 
 import java.sql.Timestamp;
 import java.util.Objects;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "segment_limitation")
+@Table(name = "segment_limitation", schema = "m1148_hackyeah18", catalog = "")
 public class SegmentLimitation {
 
 	private Integer segLimId;
@@ -21,7 +15,8 @@ public class SegmentLimitation {
 	private Limitation limitationByLimLimId;
 
 	@Id
-	@Column(name = "seg_lim_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "seg_lim_id", unique = true, nullable = false)
 	public Integer getSegLimId() {
 		return segLimId;
 	}
