@@ -1,11 +1,28 @@
 package hy.get.string.from.object.rma.services;
 
+<<<<<<< HEAD
+=======
+import hy.get.string.from.object.rma.dto.ApiError;
+import hy.get.string.from.object.rma.dto.ApiErrorDetail;
+>>>>>>> 38b716ed77cadcacd73d04539454f269d82b0f45
 import hy.get.string.from.object.rma.dto.NodeDto;
 import hy.get.string.from.object.rma.dto.SegmentDto;
 import hy.get.string.from.object.rma.entities.Node;
 import hy.get.string.from.object.rma.entities.Segment;
+<<<<<<< HEAD
+import hy.get.string.from.object.rma.hy.get.string.from.object.rma.converters.SegmentConverters;
 import hy.get.string.from.object.rma.repositories.SegmentRepository;
+=======
+import hy.get.string.from.object.rma.exceptions.ApiException;
+import hy.get.string.from.object.rma.repositories.NodeRepository;
+import hy.get.string.from.object.rma.repositories.SegmentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+>>>>>>> 38b716ed77cadcacd73d04539454f269d82b0f45
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,8 +35,12 @@ public class SegmentService {
 
 	private SegmentRepository segmentRepository;
 
-	public SegmentService(SegmentRepository segmentRepository) {
+	private NodeRepository nodeRepository;
+
+	@Autowired
+	public SegmentService(SegmentRepository segmentRepository, NodeRepository nodeRepository) {
 		this.segmentRepository = segmentRepository;
+		this.nodeRepository = nodeRepository;
 	}
 
 	public SegmentDto getSingleSegment(Integer segmentId) {
@@ -27,7 +48,7 @@ public class SegmentService {
 		Optional<Segment> segmentById = segmentRepository.findById(segmentId);
 		Segment segment = segmentById.orElse(null);
 
-		return convert(segment);
+		return SegmentConverters.convertToDto(segment);
 	}
 
 	public List<SegmentDto> getAllSegments() {
@@ -41,31 +62,100 @@ public class SegmentService {
 		}
 
 		return StreamSupport.stream(all.spliterator(), false)
-			.map(this::convert)
+			.map(p -> SegmentConverters.convertToDto(p))
 			.collect(Collectors.toList());
 	}
 
-	private SegmentDto convert(Segment p) {
-		if (p == null) {
-			return null;
-		}
+	public SegmentDto createSegment(SegmentDto segmentDto) {
 
-		return SegmentDto.builder()
-			.firstNodeDto(convert(p.getNodeByFirNode()))
-			.secondNodeDto(convert(p.getNodeBySecNode()))
-			.length(p.getLength())
-			.name(p.getName())
-			.build();
+		try {
+//			segmentDto.getFirstNodeDto()
+
+
+			Node firstNode = nodeRepository.findByLengthAndWidth(segmentDto.getFirstNodeDto().getLength(), segmentDto.getFirstNodeDto().getWidth());
+
+			if(firstNode == null){
+				NodeDto nodeDto = convertNode(firstNode);
+
+//				nodeRepository.save();
+			}
+
+			Node secondNode = nodeRepository.findByLengthAndWidth(segmentDto.getSecondNodeDto().getLength(), segmentDto.getSecondNodeDto().getWidth());
+
+			if(secondNode == null){
+
+				convertNode(secondNode);
+			}
+
+			validate(segmentDto);
+			Segment convertSegment = convertSegment(segmentDto);
+
+
+			Segment save = segmentRepository.save(convertSegment);
+			return null;
+
+		} catch (ApiException ae) {
+
+			ae.printStackTrace();
+			throw ae;
+
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			throw new ApiException(500, "Error internel");
+
+
+		}
 	}
 
-	private NodeDto convert(Node n) {
-		if(n == null)  {
-			return null;
+	private NodeDto convertNode(Node node){
+
+		NodeDto.NodeDtoBuilder nodeDtoBuilder = NodeDto.builder();
+		nodeDtoBuilder.length(node.getLength());
+		nodeDtoBuilder.width(node.getWidth());
+
+		return nodeDtoBuilder.build();
+
+	}
+
+	private Segment convertSegment(SegmentDto segmentDto) {
+		Segment segment = new Segment();
+//		segment.setNodeByFirNode(segmentDto.getFirstNodeDto());
+//		segment.firstNodeDto(segmentDto.getFirstNodeDto());
+//		segment.secondNodeDto(segmentDto.getSecondNodeDto());
+		segment.setName(segmentDto.getName());
+		segment.setLength(segmentDto.getLength());
+		return segment;
+	}
+
+	private void validate(SegmentDto segmentDto) {
+
+
+		List<ApiError> list = new ArrayList<>();
+		if (segmentDto == null) {
+			throw new ApiException(400, "empty data");
 		}
 
-		return NodeDto.builder()
-			.length(n.getLength())
-			.width(n.getWidth())
-			.build();
+		if (StringUtils.isEmpty(segmentDto.getName())) {
+
+		}
+
+		if (StringUtils.isEmpty(segmentDto.getLength())) {
+
+		}
+
+		if (segmentDto.getFirstNodeDto() != null) {
+
+		}
+
+		if (segmentDto.getSecondNodeDto() != null) {
+
+		}
+
+		if (!list.isEmpty()) {
+			throw new ApiException(400, "Invalid create segment");
+		}
+
 	}
 }
