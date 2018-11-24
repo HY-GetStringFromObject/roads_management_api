@@ -6,6 +6,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Segment {
@@ -15,6 +17,8 @@ public class Segment {
 	private Double length;
 	private Timestamp modifyDate;
 	private Timestamp insertDate;
+	private Node nodeByFirNode;
+	private Node nodeBySecNode;
 
 	@Id
 	@Column(name = "seg_id")
@@ -82,6 +86,26 @@ public class Segment {
 	@Override
 	public int hashCode() {
 		return Objects.hash(segId, name, length, modifyDate, insertDate);
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "fir_node", referencedColumnName = "nod_id", nullable = false)
+	public Node getNodeByFirNode() {
+		return nodeByFirNode;
+	}
+
+	public void setNodeByFirNode(Node nodeByFirNode) {
+		this.nodeByFirNode = nodeByFirNode;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "sec_node", referencedColumnName = "nod_id", nullable = false)
+	public Node getNodeBySecNode() {
+		return nodeBySecNode;
+	}
+
+	public void setNodeBySecNode(Node nodeBySecNode) {
+		this.nodeBySecNode = nodeBySecNode;
 	}
 
 }
