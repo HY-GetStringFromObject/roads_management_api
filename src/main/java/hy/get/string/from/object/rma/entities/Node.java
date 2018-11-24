@@ -16,7 +16,8 @@ public class Node {
 	private Timestamp insertDate;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name="nod_id", unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "nod_id", unique = true, nullable = false)
 	public Integer getNodId() {
 		return nodId;
 	}

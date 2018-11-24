@@ -2,10 +2,7 @@ package hy.get.string.from.object.rma.entities;
 
 import java.sql.Timestamp;
 import java.util.Objects;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Limitation {
@@ -16,7 +13,8 @@ public class Limitation {
 	private Timestamp toDate;
 
 	@Id
-	@Column(name = "lim_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "lim_id", unique = true, nullable = false)
 	public Integer getLimId() {
 		return limId;
 	}
