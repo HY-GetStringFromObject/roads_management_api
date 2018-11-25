@@ -2,15 +2,14 @@ package hy.get.string.from.object.rma.controllers;
 
 import com.google.maps.model.LatLng;
 import hy.get.string.from.object.rma.services.NodeService;
+
+import java.lang.invoke.MethodType;
 import java.util.List;
 import net.bedra.maciej.mblogging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import hy.get.string.from.object.rma.dto.NodeDto;
 import hy.get.string.from.object.rma.entities.Node;
 import hy.get.string.from.object.rma.services.SegmentService;
@@ -60,6 +59,24 @@ public class NodeController {
 		log.info("End create node");
 		return ResponseEntity.status(200).body(node);
 
+	}
+
+	@RequestMapping(
+		path = "/node",
+		method = RequestMethod.GET,
+		consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+	)
+
+	public ResponseEntity<List<NodeDto>> getAllNode(){
+
+		log.info("Start get all node");
+		List<NodeDto> allNode = nodeService.getAllNode();
+		log.info("End get all node");
+		if(allNode != null || !allNode.isEmpty()) {
+			return ResponseEntity.status(200).body(allNode);
+		}else{
+			return ResponseEntity.status(204).build();
+		}
 	}
 
 

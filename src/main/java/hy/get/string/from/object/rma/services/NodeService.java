@@ -8,6 +8,8 @@ import hy.get.string.from.object.rma.handlers.ResponseHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import hy.get.string.from.object.rma.hy.get.string.from.object.rma.converters.SegmentConverters;
 import net.bedra.maciej.mblogging.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +22,16 @@ import hy.get.string.from.object.rma.repositories.NodeRepository;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class NodeService {
 
 	private static Logger log = Logger.getLogger();
 
-	private String googleSecret;
 	@Value("${google.secretkey}")
+	private String googleSecret;
 
 	@Value("${google.api.url}")
 	private String googleApiUrl;
@@ -139,5 +143,18 @@ public class NodeService {
 		node.setModifyDate(new Timestamp(time.getTime()));
 
 		return node;
+	}
+
+	public List<NodeDto> getAllNode() {
+
+		Iterable<Node> allNode = nodeRepository.findAll();
+
+		if(allNode == null || !allNode.iterator().hasNext()){
+			return null;
+		}
+
+		return StreamSupport.stream(allNode.spliterator(), false)
+			.map(p -> NodeConverters.convertToDto(p))
+			.collect(Collectors.toList());
 	}
 }

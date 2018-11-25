@@ -122,14 +122,16 @@ public class SegmentService {
 
 		List<ApiErrorDetail> list = new ArrayList<>();
 
+		Segment findName = segmentRepository.findByName(segmentDto.getName());
+
 		if (segmentDto == null) {
 			throw new ApiException(400, "Empty data");
 		}
 
 		if (StringUtils.isEmpty(segmentDto.getName())) {
 			list.add(new ApiErrorDetail("Segment name is empty", new String[]{"name"}));
-		}else{
-//			segmentRepository.
+		}else if(findName != null){
+			list.add(new ApiErrorDetail("Segment name is exists", new String[]{"name"}));
 		}
 
 		if (StringUtils.isEmpty(segmentDto.getLength())) {
