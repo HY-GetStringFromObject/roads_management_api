@@ -1,6 +1,7 @@
 package hy.get.string.from.object.rma.controllers;
 
 import com.google.maps.model.LatLng;
+import hy.get.string.from.object.rma.dto.PolylineDto;
 import hy.get.string.from.object.rma.services.NodeService;
 
 import java.util.List;
@@ -36,18 +37,18 @@ public class NodeController {
 		method = RequestMethod.GET,
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 	)
-	public ResponseEntity<List<LatLng>> getConvertedPolyline(
+	public ResponseEntity<PolylineDto> getConvertedPolyline(
 		@RequestParam(value = "origin", defaultValue = "") String origin,
 		@RequestParam(value = "destination", defaultValue = "") String destination
 	) {
 		log.info("Start of getConvertedPolyline");
-		List<LatLng> points = nodeService.getConvertedPolyline(origin, destination);
+		PolylineDto polyline = nodeService.getConvertedPolyline(origin, destination);
 		log.info("End of getConvertedPolyline");
 
-		if (points == null || points.isEmpty()) {
+		if (polyline == null) {
 			return ResponseEntity.status(204).build();
 		} else {
-			return ResponseEntity.status(200).body(points);
+			return ResponseEntity.status(200).body(polyline);
 		}
 	}
 
@@ -84,7 +85,6 @@ public class NodeController {
 	@RequestMapping(
 		path = "/node/{nodId}",
 		method = RequestMethod.DELETE
-
 	)
 	public ResponseEntity<Integer> deleteNode(@PathVariable(name = "nodId") Integer nodId) {
 		log.info("Start get all nodes");

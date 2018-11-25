@@ -6,7 +6,7 @@ import hy.get.string.from.object.rma.dto.SegmentDto;
 import hy.get.string.from.object.rma.entities.Node;
 import hy.get.string.from.object.rma.entities.Segment;
 import hy.get.string.from.object.rma.exceptions.ApiException;
-import hy.get.string.from.object.rma.hy.get.string.from.object.rma.converters.SegmentConverters;
+import hy.get.string.from.object.rma.converters.SegmentConverters;
 import hy.get.string.from.object.rma.repositories.NodeRepository;
 import hy.get.string.from.object.rma.repositories.SegmentRepository;
 import java.util.ArrayList;

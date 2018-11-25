@@ -1,8 +1,9 @@
 package hy.get.string.from.object.rma.services;
 
 import com.google.maps.internal.PolylineEncoding;
-import com.google.maps.model.LatLng;
+import hy.get.string.from.object.rma.converters.PolylineConverters;
 import hy.get.string.from.object.rma.dto.ApiErrorDetail;
+import hy.get.string.from.object.rma.dto.PolylineDto;
 import hy.get.string.from.object.rma.exceptions.ApiException;
 import hy.get.string.from.object.rma.handlers.ResponseHandler;
 import net.bedra.maciej.mblogging.Logger;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import hy.get.string.from.object.rma.dto.NodeDto;
 import hy.get.string.from.object.rma.entities.Node;
-import hy.get.string.from.object.rma.hy.get.string.from.object.rma.converters.NodeConverters;
+import hy.get.string.from.object.rma.converters.NodeConverters;
 import hy.get.string.from.object.rma.repositories.NodeRepository;
 
 import java.sql.Timestamp;
@@ -24,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class NodeService {
@@ -44,7 +44,7 @@ public class NodeService {
 		this.nodeRepository = nodeRepository;
 	}
 
-	public List<LatLng> getConvertedPolyline(String origin, String destination) {
+	public PolylineDto getConvertedPolyline(String origin, String destination) {
 		try {
 			List<ApiErrorDetail> errors = new ArrayList<>();
 			String[] coordinatesStart;
@@ -71,7 +71,7 @@ public class NodeService {
 			}
 
 			if (errors.isEmpty()) {
-
+				String test = googleApiUrl + "?origin=" + origin + "&destination=" + destination + "&key=" + googleSecret;
 				RestTemplate rt = new RestTemplate();
 				ResponseEntity response = rt.getForEntity(
 					googleApiUrl + "?origin=" + origin + "&destination=" + destination + "&key=" + googleSecret,
@@ -80,10 +80,14 @@ public class NodeService {
 				Map<String, Object> responseBody = (Map<String, Object>) ResponseHandler.handleResponse(response, "Google services error");
 				ArrayList<Object> routes = (ArrayList<Object>) responseBody.get("routes");
 				Map<String, Object> routesArrays = (Map<String, Object>) routes.get(0);
+				ArrayList<Object> legs = (ArrayList<Object>) routesArrays.get("legs");
+				Map<String, Object> legsArrays = (Map<String, Object>) legs.get(0);
+				Map<String, Object> distance = (Map<String, Object>) legsArrays.get("distance");
 				Map<String, Object> polyline = (Map<String, Object>) routesArrays.get("overview_polyline");
 				String points = (String) polyline.get("points");
+				Double distanceValue = (Double) distance.get("value");
 
-				return PolylineEncoding.decode(points);
+				return PolylineConverters.convertToPolylineDto(PolylineEncoding.decode(points), distanceValue);
 			} else {
 				throw new ApiException(400, "Validation error", errors);
 			}
@@ -151,22 +155,22 @@ public class NodeService {
 	}
 
 	public Integer deleteNode(Integer nodId) {
-
 		try {
 			Optional<Node> findId = nodeRepository.findById(nodId);
+
 			if (findId.isPresent()) {
 				nodeRepository.delete(findId.get());
+
 				return nodId;
 			}
-			return null;
 
+			return null;
 		} catch (ApiException ae) {
 			throw ae;
 		} catch (Exception ex) {
 			log.error("Internal error", ex);
 			throw new ApiException(500, "Internal error");
 		}
-
-
 	}
+
 }

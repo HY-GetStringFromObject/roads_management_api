@@ -3,7 +3,7 @@ package hy.get.string.from.object.rma.services;
 import hy.get.string.from.object.rma.dto.LimitationDto;
 import hy.get.string.from.object.rma.entities.Limitation;
 import hy.get.string.from.object.rma.exceptions.ApiException;
-import hy.get.string.from.object.rma.hy.get.string.from.object.rma.converters.LimitationConverters;
+import hy.get.string.from.object.rma.converters.LimitationConverters;
 import hy.get.string.from.object.rma.repositories.LimitationRepository;
 import net.bedra.maciej.mblogging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

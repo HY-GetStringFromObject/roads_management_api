@@ -68,7 +68,7 @@ public class SegmentController {
 		consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 	)
-	public ResponseEntity<SegmentDto> CreateSegment(@RequestBody SegmentDto segmentDto) {
+	public ResponseEntity<SegmentDto> createSegment(@RequestBody SegmentDto segmentDto) {
 		log.info("Start create segment");
 		SegmentDto newSegmentDto = segmentService.createSegment(segmentDto);
 		log.info("End create segment");
