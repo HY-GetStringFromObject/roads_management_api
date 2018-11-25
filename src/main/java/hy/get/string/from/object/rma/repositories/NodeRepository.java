@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface NodeRepository extends CrudRepository<Node, Integer> {
 
 	Node findByLatAndLng(Double lat, Double lng);
+	Node findByNodId(Integer nodId);
 
 }

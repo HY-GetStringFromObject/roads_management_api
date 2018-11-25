@@ -12,15 +12,15 @@ import lombok.NoArgsConstructor;
 public class SegmentDto {
 
 	private Integer segId;
-	private NodeDto firstNodeDto;
-	private NodeDto secondNodeDto;
+	private NodeDto firstNode;
+	private NodeDto secondNode;
 	private String name;
 	private Double length;
 
 	@Builder
-	public SegmentDto(NodeDto firstNodeDto, NodeDto secondNodeDto, String name, Double length, Integer segId) {
-		this.firstNodeDto = firstNodeDto;
-		this.secondNodeDto = secondNodeDto;
+	public SegmentDto(NodeDto firstNode, NodeDto secondNode, String name, Double length, Integer segId) {
+		this.firstNode = firstNode;
+		this.secondNode = secondNode;
 		this.name = name;
 		this.length = length;
 		this.segId = segId;

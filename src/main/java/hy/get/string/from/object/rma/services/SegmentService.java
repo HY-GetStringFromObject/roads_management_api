@@ -80,8 +80,8 @@ public class SegmentService {
 
 	public SegmentDto createSegment(SegmentDto segmentDto) {
 		try {
-			Node firstNode = findNode(segmentDto.getFirstNodeDto(), segmentDto.getFirstNodeDto().getLat(), segmentDto.getFirstNodeDto().getLng());
-			Node secondNode = findNode(segmentDto.getSecondNodeDto(), segmentDto.getSecondNodeDto().getLat(), segmentDto.getSecondNodeDto().getLng());
+			Node firstNode = findNode(segmentDto.getFirstNode(), segmentDto.getFirstNode().getLat(), segmentDto.getFirstNode().getLng());
+			Node secondNode = findNode(segmentDto.getSecondNode(), segmentDto.getSecondNode().getLat(), segmentDto.getSecondNode().getLng());
 			validate(segmentDto);
 			Segment convertSegment = convertSegment(segmentDto, firstNode, secondNode);
 			Segment save = segmentRepository.save(convertSegment);

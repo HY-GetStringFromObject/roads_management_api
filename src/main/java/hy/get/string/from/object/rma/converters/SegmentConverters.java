@@ -7,8 +7,8 @@ public class SegmentConverters {
 
 	public static SegmentDto convertToDto(Segment p) {
 		return SegmentDto.builder()
-			.firstNodeDto(NodeConverters.convertToDto(p.getNodeByFirNode()))
-			.secondNodeDto(NodeConverters.convertToDto((p.getNodeBySecNode())))
+			.firstNode(NodeConverters.convertToDto(p.getNodeByFirNode()))
+			.secondNode(NodeConverters.convertToDto((p.getNodeBySecNode())))
 			.length(p.getLength())
 			.name(p.getName())
 			.segId(p.getSegId())
