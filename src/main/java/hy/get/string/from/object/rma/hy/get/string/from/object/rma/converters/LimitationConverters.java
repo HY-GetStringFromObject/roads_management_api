@@ -6,11 +6,11 @@ import hy.get.string.from.object.rma.entities.Limitation;
 public class LimitationConverters {
 
 	public static LimitationDto convertToDto(Limitation p) {
-
 		return LimitationDto.builder()
 			.fromDate(p.getFromDate())
 			.limId(p.getLimId())
 			.maxWeight(p.getMaxWeight())
 			.build();
 	}
+
 }

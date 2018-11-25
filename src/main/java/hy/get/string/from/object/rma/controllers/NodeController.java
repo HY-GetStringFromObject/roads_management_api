@@ -2,17 +2,17 @@ package hy.get.string.from.object.rma.controllers;
 
 import com.google.maps.model.LatLng;
 import hy.get.string.from.object.rma.services.NodeService;
-
-import java.lang.invoke.MethodType;
 import java.util.List;
 import net.bedra.maciej.mblogging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import hy.get.string.from.object.rma.dto.NodeDto;
-import hy.get.string.from.object.rma.entities.Node;
-import hy.get.string.from.object.rma.services.SegmentService;
 
 @RestController
 public class NodeController {
@@ -51,14 +51,12 @@ public class NodeController {
 		method = RequestMethod.POST,
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 	)
-	public ResponseEntity<NodeDto> createNode(@RequestBody NodeDto nodeDto){
-
+	public ResponseEntity<NodeDto> createNode(@RequestBody NodeDto nodeDto) {
 		log.info("Start create node");
 		NodeDto node = nodeService.createNode(nodeDto);
-
 		log.info("End create node");
-		return ResponseEntity.status(200).body(node);
 
+		return ResponseEntity.status(200).body(node);
 	}
 
 	@RequestMapping(
@@ -66,18 +64,16 @@ public class NodeController {
 		method = RequestMethod.GET,
 		consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
 	)
+	public ResponseEntity<List<NodeDto>> getAllNodes() {
+		log.info("Start get all nodes");
+		List<NodeDto> allNode = nodeService.getAllNodes();
+		log.info("End get all nodes");
 
-	public ResponseEntity<List<NodeDto>> getAllNode(){
-
-		log.info("Start get all node");
-		List<NodeDto> allNode = nodeService.getAllNode();
-		log.info("End get all node");
-		if(allNode != null || !allNode.isEmpty()) {
-			return ResponseEntity.status(200).body(allNode);
-		}else{
+		if (allNode == null || !allNode.isEmpty()) {
 			return ResponseEntity.status(204).build();
+		} else {
+			return ResponseEntity.status(200).body(allNode);
 		}
 	}
-
 
 }

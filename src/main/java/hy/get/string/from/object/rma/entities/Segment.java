@@ -1,10 +1,15 @@
 package hy.get.string.from.object.rma.entities;
 
-import org.hibernate.annotations.GenericGenerator;
-
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.sql.Timestamp;
 import java.util.Objects;
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Segment {
@@ -23,7 +28,6 @@ public class Segment {
 	public Integer getSegId() {
 		return segId;
 	}
-
 
 	public void setSegId(Integer segId) {
 		this.segId = segId;

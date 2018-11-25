@@ -8,9 +8,8 @@ import hy.get.string.from.object.rma.handlers.ResponseHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import hy.get.string.from.object.rma.hy.get.string.from.object.rma.converters.SegmentConverters;
 import net.bedra.maciej.mblogging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -38,6 +37,7 @@ public class NodeService {
 
 	private NodeRepository nodeRepository;
 
+	@Autowired
 	public NodeService(NodeRepository nodeRepository) {
 		this.nodeRepository = nodeRepository;
 	}
@@ -94,50 +94,45 @@ public class NodeService {
 	}
 
 	public NodeDto createNode(NodeDto nodeDto) {
-
 		try {
 			List<ApiErrorDetail> list = new ArrayList<>();
 
-			if (nodeDto.getLng() == null || nodeDto.getLng() < 0) {
-				list.add(new ApiErrorDetail("lng is empty or it's too small", new String[]{"lng"}));
+			if (nodeDto.getLng() == null) {
+				list.add(new ApiErrorDetail("lng is empty", new String[]{"lng"}));
 			}
 
-			if (nodeDto.getLag() == null || nodeDto.getLag() < 0) {
-				list.add(new ApiErrorDetail("lag is empty or it's too small", new String[]{"lag"}));
+			if (nodeDto.getLat() == null) {
+				list.add(new ApiErrorDetail("lag is empty", new String[]{"lag"}));
 			}
 
 			if (!list.isEmpty()) {
 				throw new ApiException(400, "Validation errors", list);
 			}
 
-			Node findNode = nodeRepository.findByLatAndLng(nodeDto.getLag(), nodeDto.getLng());
+			Node findNode = nodeRepository.findByLatAndLng(nodeDto.getLat(), nodeDto.getLng());
 
 			if (findNode == null) {
-
 				findNode = convertToDbNode(nodeDto);
 			} else {
-
 				findNode.setModifyDate(new Timestamp(Calendar.getInstance().getTime().getTime()));
 			}
+
 			Node save = nodeRepository.save(findNode);
 			log.info("Save node to DB id: " + save.getNodId());
-			return NodeConverters.convertToDto(save);
 
+			return NodeConverters.convertToDto(save);
 		} catch (ApiException ae) {
 			throw ae;
 		} catch (Exception ex) {
 			log.error("Internal error", ex);
 			throw new ApiException(500, "Internal error");
 		}
-
-
 	}
 
 	private Node convertToDbNode(NodeDto nodeDto) {
-
 		Date time = Calendar.getInstance().getTime();
 		Node node = new Node();
-		node.setLat(nodeDto.getLag());
+		node.setLat(nodeDto.getLat());
 		node.setLng(nodeDto.getLng());
 		node.setInsertDate(new Timestamp(time.getTime()));
 		node.setModifyDate(new Timestamp(time.getTime()));
@@ -145,16 +140,17 @@ public class NodeService {
 		return node;
 	}
 
-	public List<NodeDto> getAllNode() {
+	public List<NodeDto> getAllNodes() {
 
-		Iterable<Node> allNode = nodeRepository.findAll();
+		Iterable<Node> allNodes = nodeRepository.findAll();
 
-		if(allNode == null || !allNode.iterator().hasNext()){
+		if (!allNodes.iterator().hasNext()) {
 			return null;
 		}
 
-		return StreamSupport.stream(allNode.spliterator(), false)
-			.map(p -> NodeConverters.convertToDto(p))
+		return StreamSupport.stream(allNodes.spliterator(), false)
+			.map(NodeConverters::convertToDto)
 			.collect(Collectors.toList());
 	}
+
 }

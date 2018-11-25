@@ -11,13 +11,15 @@ import lombok.NoArgsConstructor;
 @JsonDeserialize(builder = SegmentLimitationDto.SegmentLimitationDtoBuilder.class)
 public class SegmentLimitationDto {
 
+	private Integer segLimId;
 	private Integer segSegId;
 	private Integer limLimId;
 
 	@Builder
-	public SegmentLimitationDto(Integer segSegId, Integer limLimId) {
+	public SegmentLimitationDto(Integer segSegId, Integer limLimId, Integer segLimId) {
 		this.segSegId = segSegId;
 		this.limLimId = limLimId;
+		this.segLimId = segLimId;
 	}
 
 	@JsonPOJOBuilder(withPrefix = "")

@@ -2,7 +2,12 @@ package hy.get.string.from.object.rma.entities;
 
 import java.sql.Timestamp;
 import java.util.Objects;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class Limitation {

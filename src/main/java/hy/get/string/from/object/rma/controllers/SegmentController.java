@@ -6,18 +6,13 @@ import net.bedra.maciej.mblogging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-
 import java.util.List;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class SegmentController {
 
@@ -36,12 +31,14 @@ public class SegmentController {
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 	)
 	public ResponseEntity<SegmentDto> getSegmentById(@PathVariable(name = "segId") Integer segId) {
-
+		log.info("Start of getSegmentById");
 		SegmentDto singleSegment = segmentService.getSingleSegment(segId);
+		log.info("End of getSegmentById");
+
 		if (singleSegment == null) {
-			return ResponseEntity.noContent().build();
+			return ResponseEntity.status(204).build();
 		} else {
-			return ResponseEntity.ok(singleSegment);
+			return ResponseEntity.status(200).build();
 		}
 	}
 
@@ -50,13 +47,15 @@ public class SegmentController {
 		method = RequestMethod.GET,
 		produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 	)
-	public ResponseEntity<List<SegmentDto>> getSegmentById() {
-
+	public ResponseEntity<List<SegmentDto>> getAllSegments() {
+		log.info("Start of getAllSegments");
 		List<SegmentDto> segmentList = segmentService.getAllSegments();
+		log.info("End of getAllSegments");
+
 		if (segmentList == null) {
-			return ResponseEntity.noContent().build();
+			return ResponseEntity.status(204).build();
 		} else {
-			return ResponseEntity.ok(segmentList);
+			return ResponseEntity.status(200).body(segmentList);
 		}
 	}
 
@@ -70,8 +69,8 @@ public class SegmentController {
 		log.info("Start create segment");
 		SegmentDto newSegmentDto = segmentService.createSegment(segmentDto);
 		log.info("End create segment");
-		return ResponseEntity.status(200).body(newSegmentDto);
 
+		return ResponseEntity.status(200).body(newSegmentDto);
 	}
 
 }

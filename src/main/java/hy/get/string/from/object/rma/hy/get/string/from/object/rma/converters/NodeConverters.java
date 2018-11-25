@@ -4,15 +4,13 @@ import hy.get.string.from.object.rma.dto.NodeDto;
 import hy.get.string.from.object.rma.entities.Node;
 
 public class NodeConverters {
-	public static NodeDto convertToDto(Node n) {
-		if (n == null) {
-			return null;
-		}
 
+	public static NodeDto convertToDto(Node n) {
 		return NodeDto.builder()
 			.lng(n.getLng())
-			.lag(n.getLat())
-			.idNode(n.getNodId())
+			.lat(n.getLat())
+			.nodId(n.getNodId())
 			.build();
 	}
+
 }

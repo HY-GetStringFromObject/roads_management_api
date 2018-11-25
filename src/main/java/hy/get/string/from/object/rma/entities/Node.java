@@ -1,10 +1,12 @@
 package hy.get.string.from.object.rma.entities;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import java.sql.Timestamp;
-import java.util.Objects;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class Node {
@@ -70,13 +72,12 @@ public class Node {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-
 		Node node = (Node) o;
-
 		if (!nodId.equals(node.nodId)) return false;
 		if (!lat.equals(node.lat)) return false;
 		if (!lng.equals(node.lng)) return false;
 		if (modifyDate != null ? !modifyDate.equals(node.modifyDate) : node.modifyDate != null) return false;
+
 		return insertDate != null ? insertDate.equals(node.insertDate) : node.insertDate == null;
 	}
 
@@ -87,6 +88,8 @@ public class Node {
 		result = 31 * result + lng.hashCode();
 		result = 31 * result + (modifyDate != null ? modifyDate.hashCode() : 0);
 		result = 31 * result + (insertDate != null ? insertDate.hashCode() : 0);
+
 		return result;
 	}
+
 }

@@ -11,22 +11,23 @@ import lombok.NoArgsConstructor;
 @JsonDeserialize(builder = SegmentDto.SegmentDtoBuilder.class)
 public class SegmentDto {
 
+	private Integer segId;
 	private NodeDto firstNodeDto;
 	private NodeDto secondNodeDto;
 	private String name;
 	private Double length;
-	private Integer segmentId;
 
 	@Builder
-	public SegmentDto(NodeDto firstNodeDto, NodeDto secondNodeDto, String name, Double length, Integer segmentId) {
+	public SegmentDto(NodeDto firstNodeDto, NodeDto secondNodeDto, String name, Double length, Integer segId) {
 		this.firstNodeDto = firstNodeDto;
 		this.secondNodeDto = secondNodeDto;
 		this.name = name;
 		this.length = length;
-		this.segmentId = segmentId;
+		this.segId = segId;
 	}
 
 	@JsonPOJOBuilder(withPrefix = "")
 	public static class SegmentDtoBuilder {
 	}
+
 }

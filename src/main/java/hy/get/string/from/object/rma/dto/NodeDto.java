@@ -12,17 +12,18 @@ import lombok.NoArgsConstructor;
 public class NodeDto {
 
 	private Double lng;
-	private Double lag;
-	private Integer idNode;
+	private Double lat;
+	private Integer nodId;
 
 	@Builder
-	public NodeDto(Double lag, Double lng, Integer idNode) {
-		this.lag = lag;
+	public NodeDto(Double lat, Double lng, Integer nodId) {
+		this.lat = lat;
 		this.lng = lng;
-		this.idNode = idNode;
+		this.nodId = nodId;
 	}
 
 	@JsonPOJOBuilder(withPrefix = "")
 	public static class NodeDtoBuilder {
 	}
+
 }

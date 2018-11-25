@@ -2,10 +2,18 @@ package hy.get.string.from.object.rma.entities;
 
 import java.sql.Timestamp;
 import java.util.Objects;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "segment_limitation", schema = "m1148_hackyeah18", catalog = "")
+@Table(name = "segment_limitation")
 public class SegmentLimitation {
 
 	private Integer segLimId;

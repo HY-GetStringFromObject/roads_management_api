@@ -1,6 +1,5 @@
 package hy.get.string.from.object.rma.services;
 
-import hy.get.string.from.object.rma.dto.ApiError;
 import hy.get.string.from.object.rma.dto.ApiErrorDetail;
 import hy.get.string.from.object.rma.dto.NodeDto;
 import hy.get.string.from.object.rma.dto.SegmentDto;
@@ -10,14 +9,16 @@ import hy.get.string.from.object.rma.exceptions.ApiException;
 import hy.get.string.from.object.rma.hy.get.string.from.object.rma.converters.SegmentConverters;
 import hy.get.string.from.object.rma.repositories.NodeRepository;
 import hy.get.string.from.object.rma.repositories.SegmentRepository;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Optional;
 import net.bedra.maciej.mblogging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
 import java.sql.Timestamp;
-import java.util.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -38,43 +39,11 @@ public class SegmentService {
 	}
 
 	public SegmentDto getSingleSegment(Integer segmentId) {
-
-		Optional<Segment> segmentById = segmentRepository.findById(segmentId);
-		Segment segment = segmentById.orElse(null);
-
-		return SegmentConverters.convertToDto(segment);
-	}
-
-	public List<SegmentDto> getAllSegments() {
-		Iterable<Segment> all = segmentRepository.findAll();
-		Integer size = 0;
-		if (all instanceof Collection) {
-			size = ((Collection) all).size();
-		}
-		if (size == 0) {
-			return null;
-		}
-
-		return StreamSupport.stream(all.spliterator(), false)
-			.map(p -> SegmentConverters.convertToDto(p))
-			.collect(Collectors.toList());
-	}
-
-	public SegmentDto createSegment(SegmentDto segmentDto) {
-
 		try {
+			Optional<Segment> segmentById = segmentRepository.findById(segmentId);
+			Segment segment = segmentById.orElse(null);
 
-			Node firstNode = findNode(segmentDto.getFirstNodeDto(), segmentDto.getFirstNodeDto().getLng(), segmentDto.getFirstNodeDto().getLag());
-			Node secondNode = findNode(segmentDto.getSecondNodeDto(), segmentDto.getSecondNodeDto().getLng(), segmentDto.getSecondNodeDto().getLag());
-
-
-			validate(segmentDto);
-			Segment convertSegment = convertSegment(segmentDto, firstNode, secondNode);
-			Segment save = segmentRepository.save(convertSegment);
-			log.info("Save segment in database id: " + save.getSegId());
-			segmentDto.setSegmentId(save.getSegId());
-			return segmentDto;
-
+			return SegmentConverters.convertToDto(segment);
 		} catch (ApiException ae) {
 			throw ae;
 		} catch (Exception ex) {
@@ -82,28 +51,71 @@ public class SegmentService {
 			throw new ApiException(500, "Internal error");
 		}
 	}
-	private Node findNode(NodeDto nodeDto, Double length, Double width){
 
-		Node node = nodeRepository.findByLatAndLng(length, width);
+	public List<SegmentDto> getAllSegments() {
+		try {
+			Iterable<Segment> all = segmentRepository.findAll();
+			Integer size = 0;
+
+			if (all instanceof Collection) {
+				size = ((Collection) all).size();
+			}
+
+			if (size == 0) {
+				return null;
+			}
+
+			return StreamSupport.stream(all.spliterator(), false)
+				.map(SegmentConverters::convertToDto)
+				.collect(Collectors.toList());
+		} catch (ApiException ae) {
+			throw ae;
+		} catch (Exception ex) {
+			log.error("Internal error", ex);
+			throw new ApiException(500, "Internal error");
+		}
+	}
+
+	public SegmentDto createSegment(SegmentDto segmentDto) {
+		try {
+			Node firstNode = findNode(segmentDto.getFirstNodeDto(), segmentDto.getFirstNodeDto().getLat(), segmentDto.getFirstNodeDto().getLng());
+			Node secondNode = findNode(segmentDto.getSecondNodeDto(), segmentDto.getSecondNodeDto().getLat(), segmentDto.getSecondNodeDto().getLng());
+			validate(segmentDto);
+			Segment convertSegment = convertSegment(segmentDto, firstNode, secondNode);
+			Segment save = segmentRepository.save(convertSegment);
+			log.info("Save segment in database id: " + save.getSegId());
+			segmentDto.setSegId(save.getSegId());
+
+			return segmentDto;
+		} catch (ApiException ae) {
+			throw ae;
+		} catch (Exception ex) {
+			log.error("Internal error", ex);
+			throw new ApiException(500, "Internal error");
+		}
+	}
+
+	private Node findNode(NodeDto nodeDto, Double lat, Double lng) {
+		Node node = nodeRepository.findByLatAndLng(lat, lng);
 
 		if (node == null) {
-			log.info("Create  node - length: " + length + " width: " + width);
+			log.info("Create  node - lat: " + lat + " lng: " + lng);
 			node = convertNode(nodeDto);
 			nodeRepository.save(node);
 		}
+
 		return node;
 	}
 
 	private Node convertNode(NodeDto nodeDto) {
-
 		long time = Calendar.getInstance().getTime().getTime();
 		Node node = new Node();
 		node.setLng(nodeDto.getLng());
-		node.setLat(nodeDto.getLag());
+		node.setLat(nodeDto.getLat());
 		node.setInsertDate(new Timestamp(time));
 		node.setModifyDate(new Timestamp(time));
-		return node;
 
+		return node;
 	}
 
 	private Segment convertSegment(SegmentDto segmentDto, Node firstNode, Node secondNode) {
@@ -115,22 +127,18 @@ public class SegmentService {
 		segment.setLength(segmentDto.getLength());
 		segment.setInsertDate(new Timestamp(time.getTime()));
 		segment.setModifyDate(new Timestamp(time.getTime()));
+
 		return segment;
 	}
 
 	private void validate(SegmentDto segmentDto) {
-
 		List<ApiErrorDetail> list = new ArrayList<>();
 
 		Segment findName = segmentRepository.findByName(segmentDto.getName());
 
-		if (segmentDto == null) {
-			throw new ApiException(400, "Empty data");
-		}
-
 		if (StringUtils.isEmpty(segmentDto.getName())) {
 			list.add(new ApiErrorDetail("Segment name is empty", new String[]{"name"}));
-		}else if(findName != null){
+		} else if (findName != null) {
 			list.add(new ApiErrorDetail("Segment name is exists", new String[]{"name"}));
 		}
 
@@ -141,6 +149,6 @@ public class SegmentService {
 		if (!list.isEmpty()) {
 			throw new ApiException(400, "Validation errors", list);
 		}
-
 	}
+
 }
