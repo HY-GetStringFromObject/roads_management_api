@@ -102,7 +102,7 @@ public class NodeService {
 			}
 
 			if (nodeDto.getLat() == null) {
-				list.add(new ApiErrorDetail("lag is empty", new String[]{"lag"}));
+				list.add(new ApiErrorDetail("lat is empty", new String[]{"lat"}));
 			}
 
 			if (!list.isEmpty()) {
@@ -141,14 +141,9 @@ public class NodeService {
 	}
 
 	public List<NodeDto> getAllNodes() {
+		List<Node> allNodes = (List<Node>) nodeRepository.findAll();
 
-		Iterable<Node> allNodes = nodeRepository.findAll();
-
-		if (!allNodes.iterator().hasNext()) {
-			return null;
-		}
-
-		return StreamSupport.stream(allNodes.spliterator(), false)
+		return allNodes.stream()
 			.map(NodeConverters::convertToDto)
 			.collect(Collectors.toList());
 	}

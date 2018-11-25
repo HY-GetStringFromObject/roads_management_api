@@ -69,7 +69,7 @@ public class NodeController {
 		List<NodeDto> allNode = nodeService.getAllNodes();
 		log.info("End get all nodes");
 
-		if (allNode == null || !allNode.isEmpty()) {
+		if (allNode == null || allNode.isEmpty()) {
 			return ResponseEntity.status(204).build();
 		} else {
 			return ResponseEntity.status(200).body(allNode);
