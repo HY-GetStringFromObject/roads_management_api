@@ -6,7 +6,7 @@ import java.util.List;
 
 public class PolylineConverters {
 
-	public static PolylineDto convertToPolylineDto(List<LatLng> coordinates, Double length) {
+	public static PolylineDto convertToPolylineDto(List<LatLng> coordinates, Integer length) {
 		return PolylineDto.builder()
 			.polyline(coordinates)
 			.length(length)

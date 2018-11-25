@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 public class PolylineDto {
 
 	private List<LatLng> polyline;
-	private Double length;
+	private Integer length;
 
 	@Builder
-	public PolylineDto(List<LatLng> polyline, Double length) {
+	public PolylineDto(List<LatLng> polyline, Integer length) {
 		this.polyline = polyline;
 		this.length = length;
 	}

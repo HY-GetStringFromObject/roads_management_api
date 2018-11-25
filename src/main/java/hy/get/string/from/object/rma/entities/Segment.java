@@ -16,7 +16,7 @@ public class Segment {
 
 	private Integer segId;
 	private String name;
-	private Double length;
+	private Integer length;
 	private Timestamp modifyDate;
 	private Timestamp insertDate;
 	private Node nodeByFirNode;
@@ -45,11 +45,11 @@ public class Segment {
 
 	@Basic
 	@Column(name = "length")
-	public Double getLength() {
+	public Integer getLength() {
 		return length;
 	}
 
-	public void setLength(Double length) {
+	public void setLength(Integer length) {
 		this.length = length;
 	}
 

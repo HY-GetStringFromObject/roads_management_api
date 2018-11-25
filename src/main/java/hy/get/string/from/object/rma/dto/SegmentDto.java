@@ -15,10 +15,10 @@ public class SegmentDto {
 	private NodeDto firstNode;
 	private NodeDto secondNode;
 	private String name;
-	private Double length;
+	private Integer length;
 
 	@Builder
-	public SegmentDto(NodeDto firstNode, NodeDto secondNode, String name, Double length, Integer segId) {
+	public SegmentDto(NodeDto firstNode, NodeDto secondNode, String name, Integer length, Integer segId) {
 		this.firstNode = firstNode;
 		this.secondNode = secondNode;
 		this.name = name;

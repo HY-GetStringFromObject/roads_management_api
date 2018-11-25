@@ -85,7 +85,7 @@ public class NodeService {
 				Map<String, Object> distance = (Map<String, Object>) legsArrays.get("distance");
 				Map<String, Object> polyline = (Map<String, Object>) routesArrays.get("overview_polyline");
 				String points = (String) polyline.get("points");
-				Double distanceValue = (Double) distance.get("value");
+				Integer distanceValue = (Integer) distance.get("value");
 
 				return PolylineConverters.convertToPolylineDto(PolylineEncoding.decode(points), distanceValue);
 			} else {
