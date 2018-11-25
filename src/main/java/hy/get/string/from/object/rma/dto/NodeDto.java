@@ -11,14 +11,14 @@ import lombok.NoArgsConstructor;
 @JsonDeserialize(builder = NodeDto.NodeDtoBuilder.class)
 public class NodeDto {
 
-	private Double length;
-	private Double width;
+	private Double lng;
+	private Double lag;
 	private Integer idNode;
 
 	@Builder
-	public NodeDto(Double length, Double width, Integer idNode) {
-		this.length = length;
-		this.width = width;
+	public NodeDto(Double lag, Double lng, Integer idNode) {
+		this.lag = lag;
+		this.lng = lng;
 		this.idNode = idNode;
 	}
 

@@ -10,8 +10,8 @@ public class NodeConverters {
 		}
 
 		return NodeDto.builder()
-			.length(n.getLng())
-			.width(n.getLat())
+			.lng(n.getLng())
+			.lag(n.getLat())
 			.idNode(n.getNodId())
 			.build();
 	}

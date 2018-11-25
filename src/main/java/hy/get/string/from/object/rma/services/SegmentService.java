@@ -64,8 +64,8 @@ public class SegmentService {
 
 		try {
 
-			Node firstNode = findNode(segmentDto.getFirstNodeDto(), segmentDto.getFirstNodeDto().getLength(), segmentDto.getFirstNodeDto().getWidth());
-			Node secondNode = findNode(segmentDto.getSecondNodeDto(), segmentDto.getSecondNodeDto().getLength(), segmentDto.getSecondNodeDto().getWidth());
+			Node firstNode = findNode(segmentDto.getFirstNodeDto(), segmentDto.getFirstNodeDto().getLng(), segmentDto.getFirstNodeDto().getLag());
+			Node secondNode = findNode(segmentDto.getSecondNodeDto(), segmentDto.getSecondNodeDto().getLng(), segmentDto.getSecondNodeDto().getLag());
 
 
 			validate(segmentDto);
@@ -98,8 +98,8 @@ public class SegmentService {
 
 		long time = Calendar.getInstance().getTime().getTime();
 		Node node = new Node();
-		node.setLng(nodeDto.getLength());
-		node.setLat(nodeDto.getWidth());
+		node.setLng(nodeDto.getLng());
+		node.setLat(nodeDto.getLag());
 		node.setInsertDate(new Timestamp(time));
 		node.setModifyDate(new Timestamp(time));
 		return node;
