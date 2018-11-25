@@ -1,13 +1,17 @@
 package hy.get.string.from.object.rma.services;
 
 import com.google.maps.model.LatLng;
+import hy.get.string.from.object.rma.dto.ApiError;
 import hy.get.string.from.object.rma.dto.ApiErrorDetail;
+import hy.get.string.from.object.rma.dto.PolylineDto;
 import hy.get.string.from.object.rma.entities.Node;
 import hy.get.string.from.object.rma.entities.Segment;
 import hy.get.string.from.object.rma.exceptions.ApiException;
 import hy.get.string.from.object.rma.repositories.NodeRepository;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import net.bedra.maciej.mblogging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,33 +23,38 @@ public class RouteService {
 
 	private NodeRepository nodeRepository;
 
+	private NodeService nodeService;
+
 	@Autowired
-	public RouteService(NodeRepository nodeRepository) {
+	public RouteService(NodeRepository nodeRepository, NodeService nodeService) {
+
 		this.nodeRepository = nodeRepository;
+		this.nodeService = nodeService;
 	}
 
-	public List<LatLng> getBestRoute(Integer startNodId, Integer endNodId) {
+	public PolylineDto getBestRoute(Integer startNodId, Integer endNodId) {
 		try {
-			List<ApiErrorDetail> errors = new ArrayList<>();
-			Node startNode = nodeRepository.findByNodId(startNodId);
 
-			if (startNode == null) {
-				errors.add(new ApiErrorDetail("Start node do not exists", new String[]{"startNodId"}));
+			List<ApiErrorDetail> errorList = new ArrayList<>();
+			Node firstNode = nodeRepository.findByNodId(startNodId);
+			Node secondNode = nodeRepository.findByNodId(endNodId);
+
+			if (firstNode == null) {
+				errorList.add(new ApiErrorDetail("Start node do not existe", new String[]{"startNodId"}));
 			}
 
-			Node endNode = nodeRepository.findByNodId(endNodId);
-
-			if (endNode == null) {
-				errors.add(new ApiErrorDetail("End node do not exists", new String[]{"endNodId"}));
+			if (secondNode == null) {
+				errorList.add(new ApiErrorDetail("End node do not existe", new String[]{"endNodId"}));
 			}
 
-//			if (errors.isEmpty()) {
-//				Segment startSegment =
-//			} else {
-//				throw new ApiException(400, "Validation error", errors);
-//			}
+			if (!errorList.isEmpty()) {
+				throw new ApiException(400, "Validation error", errorList);
+			} else {
 
-			return null;
+				PolylineDto convertedPolyline = nodeService.getConvertedPolyline(firstNode.getLat().toString() + "," + firstNode.getLng().toString(), secondNode.getLat().toString() + "," + secondNode.getLng().toString());
+				return convertedPolyline;
+
+			}
 		} catch (ApiException ae) {
 			throw ae;
 		} catch (Exception ex) {

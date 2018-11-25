@@ -1,6 +1,10 @@
 package hy.get.string.from.object.rma.controllers;
 
+import hy.get.string.from.object.rma.dto.PolylineDto;
+import hy.get.string.from.object.rma.services.NodeService;
+import hy.get.string.from.object.rma.services.RouteService;
 import net.bedra.maciej.mblogging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,7 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(value = "*", maxAge = 3600)
 public class RouteController {
 
+	private NodeService nodeService;
+
 	private static Logger log = Logger.getLogger();
+
+	private RouteService routeService;
+
+	@Autowired
+	RouteController(RouteService routeService) {
+		this.routeService = routeService;
+	}
 
 	@RequestMapping(
 		path = "/route/{first_nod_id}/{second_nod_id}",
@@ -24,7 +37,16 @@ public class RouteController {
 		@PathVariable(name = "first_nod_id") Integer startNodId,
 		@PathVariable(name = "second_nod_id") Integer endNodId
 	) {
-		return null;
+		log.info("Start getBestRoute");
+		PolylineDto bestRoute = routeService.getBestRoute(startNodId, endNodId);
+		log.info("End getBestRoute");
+
+		if (bestRoute != null) {
+			return ResponseEntity.status(200).body(bestRoute);
+		} else {
+			return ResponseEntity.status(204).build();
+		}
 	}
+
 
 }

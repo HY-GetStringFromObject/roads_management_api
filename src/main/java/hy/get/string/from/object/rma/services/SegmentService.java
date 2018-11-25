@@ -152,5 +152,4 @@ public class SegmentService {
 			throw new ApiException(400, "Validation errors", list);
 		}
 	}
-
 }
