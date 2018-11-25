@@ -2,7 +2,9 @@ package hy.get.string.from.object.rma.controllers;
 
 import com.google.maps.model.LatLng;
 import hy.get.string.from.object.rma.services.NodeService;
+
 import java.util.List;
+
 import net.bedra.maciej.mblogging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 import hy.get.string.from.object.rma.dto.NodeDto;
 
 @RestController
@@ -75,6 +78,23 @@ public class NodeController {
 			return ResponseEntity.status(204).build();
 		} else {
 			return ResponseEntity.status(200).body(allNode);
+		}
+	}
+
+	@RequestMapping(
+		path = "/node/{nodId}",
+		method = RequestMethod.DELETE
+
+	)
+	public ResponseEntity<Integer> deleteNode(@PathVariable(name = "nodId") Integer nodId) {
+		log.info("Start get all nodes");
+		Integer deleteNodeId = nodeService.deleteNode(nodId);
+		log.info("End get all nodes");
+
+		if (deleteNodeId != null) {
+			return ResponseEntity.status(200).body(deleteNodeId);
+		} else {
+			return ResponseEntity.status(204).build();
 		}
 	}
 

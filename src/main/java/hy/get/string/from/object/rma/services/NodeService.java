@@ -5,9 +5,6 @@ import com.google.maps.model.LatLng;
 import hy.get.string.from.object.rma.dto.ApiErrorDetail;
 import hy.get.string.from.object.rma.exceptions.ApiException;
 import hy.get.string.from.object.rma.handlers.ResponseHandler;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import net.bedra.maciej.mblogging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,9 +15,14 @@ import hy.get.string.from.object.rma.dto.NodeDto;
 import hy.get.string.from.object.rma.entities.Node;
 import hy.get.string.from.object.rma.hy.get.string.from.object.rma.converters.NodeConverters;
 import hy.get.string.from.object.rma.repositories.NodeRepository;
+
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -148,4 +150,23 @@ public class NodeService {
 			.collect(Collectors.toList());
 	}
 
+	public Integer deleteNode(Integer nodId) {
+
+		try {
+			Optional<Node> findId = nodeRepository.findById(nodId);
+			if (findId.isPresent()) {
+				nodeRepository.delete(findId.get());
+				return nodId;
+			}
+			return null;
+
+		} catch (ApiException ae) {
+			throw ae;
+		} catch (Exception ex) {
+			log.error("Internal error", ex);
+			throw new ApiException(500, "Internal error");
+		}
+
+
+	}
 }
