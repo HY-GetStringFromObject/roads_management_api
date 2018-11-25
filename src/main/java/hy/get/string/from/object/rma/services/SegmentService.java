@@ -148,10 +148,6 @@ public class SegmentService {
 			list.add(new ApiErrorDetail("Segment name is exists", new String[]{"name"}));
 		}
 
-		if (StringUtils.isEmpty(segmentDto.getLength())) {
-			list.add(new ApiErrorDetail("Segment length is empty", new String[]{"length"}));
-		}
-
 		if (!list.isEmpty()) {
 			throw new ApiException(400, "Validation errors", list);
 		}
