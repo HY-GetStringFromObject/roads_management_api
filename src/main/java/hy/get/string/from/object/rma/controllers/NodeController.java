@@ -62,7 +62,7 @@ public class NodeController {
 	@RequestMapping(
 		path = "/node",
 		method = RequestMethod.GET,
-		consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+		produces = MediaType.APPLICATION_JSON_UTF8_VALUE
 	)
 	public ResponseEntity<List<NodeDto>> getAllNodes() {
 		log.info("Start get all nodes");
