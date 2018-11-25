@@ -2,6 +2,7 @@ package hy.get.string.from.object.rma.services;
 
 import hy.get.string.from.object.rma.dto.ApiErrorDetail;
 import hy.get.string.from.object.rma.dto.NodeDto;
+import hy.get.string.from.object.rma.dto.PolylineDto;
 import hy.get.string.from.object.rma.dto.SegmentDto;
 import hy.get.string.from.object.rma.entities.Node;
 import hy.get.string.from.object.rma.entities.Segment;
@@ -26,16 +27,17 @@ import java.util.stream.StreamSupport;
 @Service
 public class SegmentService {
 
-	private SegmentRepository segmentRepository;
-
-	private NodeRepository nodeRepository;
-
 	private static Logger log = Logger.getLogger();
 
+	private SegmentRepository segmentRepository;
+	private NodeRepository nodeRepository;
+	private NodeService nodeService;
+
 	@Autowired
-	public SegmentService(SegmentRepository segmentRepository, NodeRepository nodeRepository) {
+	public SegmentService(SegmentRepository segmentRepository, NodeRepository nodeRepository, NodeService nodeService) {
 		this.segmentRepository = segmentRepository;
 		this.nodeRepository = nodeRepository;
+		this.nodeService = nodeService;
 	}
 
 	public SegmentDto getSingleSegment(Integer segmentId) {
@@ -120,11 +122,15 @@ public class SegmentService {
 
 	private Segment convertSegment(SegmentDto segmentDto, Node firstNode, Node secondNode) {
 		Date time = Calendar.getInstance().getTime();
+		PolylineDto polyline = nodeService.getConvertedPolyline(
+			firstNode.getLat().toString() + "," + firstNode.getLng(),
+			secondNode.getLat().toString() + "," + secondNode.getLng()
+		);
 		Segment segment = new Segment();
 		segment.setNodeByFirNode(firstNode);
 		segment.setNodeBySecNode(secondNode);
 		segment.setName(segmentDto.getName());
-		segment.setLength(segmentDto.getLength());
+		segment.setLength(polyline.getLength());
 		segment.setInsertDate(new Timestamp(time.getTime()));
 		segment.setModifyDate(new Timestamp(time.getTime()));
 
