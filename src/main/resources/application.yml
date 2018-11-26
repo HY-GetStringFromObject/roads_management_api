@@ -1,9 +1,9 @@
 mysql:
-  host: mysql20.mydevil.net
-  port: 3306
-  database: m1148_hackyeah18
-  username: m1148_hackyeah18
-  password: 1598264Hackyeah18
+  host: 
+  port: 
+  database:
+  username: 
+  password:
 
 google:
   secretkey:
